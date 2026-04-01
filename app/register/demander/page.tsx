@@ -63,10 +63,35 @@ export default function DemanderRegisterPage() {
       return;
     }
 
-    // TODO: 提交注册表单到后端
-    console.log("提交注册:", formData);
-    alert("注册成功！即将跳转到控制台");
-    // window.location.href = "/dashboard";
+    try {
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userType: 'demander',
+          organizationName: formData.organizationName,
+          email: formData.email,
+          industry: formData.industry,
+          contactName: formData.contactName,
+          phone: formData.phone,
+          password: formData.password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("注册成功！即将跳转到控制台");
+        // window.location.href = "/dashboard";
+      } else {
+        alert(`注册失败: ${data.error || '未知错误'}`);
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      alert('注册失败，请重试');
+    }
   };
 
   return (

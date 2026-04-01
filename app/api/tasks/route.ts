@@ -1,56 +1,68 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '../../../../prisma/prisma/client'
+import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
 // GET /api/tasks - 获取任务列表
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams
+    const { searchParams } = new URL(request.url)
     const status = searchParams.get('status')
     const category = searchParams.get('category')
+    const tags = searchParams.get('tags')
+    const page = parseInt(searchParams.get('page') || '1')
     const limit = parseInt(searchParams.get('limit') || '10')
-    const offset = parseInt(searchParams.get('offset') || '0')
+    const skip = (page - 1) * limit
 
+    // 构建查询条件
     const where: any = {}
-    if (status) where.status = status
-    if (category) where.category = category
+    
+    if (status) {
+      where.status = status
+    }
+    
+    if (category) {
+      where.category = category
+    }
+    
+    // SQLite doesn't support array operations on Json fields
+    // We'll filter tags in application code after fetching
+    // For now, we skip tag filtering in database query
+    // TODO: Implement proper tag filtering with Prisma Json filtering
 
-    const tasks = await prisma.task.findMany({
-      where,
-      include: {
-        organization: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            type: true
+    // 查询任务
+    const [tasks, total] = await Promise.all([
+      prisma.task.findMany({
+        where,
+        skip,
+        take: limit,
+        orderBy: {
+          createdAt: 'desc'
+        },
+        include: {
+          organization: {
+            select: {
+              name: true
+            }
           }
         }
-      },
-      orderBy: {
-        createdAt: 'desc'
-      },
-      take: limit,
-      skip: offset
-    })
-
-    const total = await prisma.task.count({ where })
+      }),
+      prisma.task.count({ where })
+    ])
 
     return NextResponse.json({
-      success: true,
-      data: tasks,
+      tasks,
       pagination: {
-        total,
+        page,
         limit,
-        offset,
-        hasMore: offset + limit < total
+        total,
+        totalPages: Math.ceil(total / limit)
       }
     })
-  } catch (error: any) {
-    console.error('获取任务列表失败:', error)
+  } catch (error) {
+    console.error('Error fetching tasks:', error)
     return NextResponse.json(
-      { success: false, error: error.message },
+      { error: 'Failed to fetch tasks' },
       { status: 500 }
     )
   }
@@ -60,38 +72,32 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    
     const {
-      orgId,
       title,
       description,
       category,
       tags,
       budget,
       deadline,
-      attachments,
-      requirements
+      organizationId
     } = body
 
     // 验证必填字段
-    if (!orgId || !title || !description || !category || !tags || tags.length === 0) {
+    if (!title || !description || !category || !organizationId) {
       return NextResponse.json(
-        { 
-          success: false, 
-          error: '缺少必填字段: orgId, title, description, category, tags' 
-        },
+        { error: 'Missing required fields' },
         { status: 400 }
       )
     }
 
     // 验证组织是否存在
-    const org = await prisma.organization.findUnique({
-      where: { id: orgId }
+    const organization = await prisma.organization.findUnique({
+      where: { id: organizationId }
     })
 
-    if (!org) {
+    if (!organization) {
       return NextResponse.json(
-        { success: false, error: '组织不存在' },
+        { error: 'Organization not found' },
         { status: 404 }
       )
     }
@@ -99,40 +105,34 @@ export async function POST(request: NextRequest) {
     // 创建任务
     const task = await prisma.task.create({
       data: {
-        orgId,
         title,
         description,
         category,
-        tags: JSON.parse(JSON.stringify(tags)),
-        budget: budget ? parseFloat(budget) : null,
+        tags: tags || [],
+        budget: budget || null,
         deadline: deadline ? new Date(deadline) : null,
-        attachments: attachments ? JSON.parse(JSON.stringify(attachments)) : null,
-        requirements: requirements ? JSON.parse(JSON.stringify(requirements)) : null,
-        status: 'OPEN'
+        organizationId,
+        status: 'open',
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       include: {
         organization: {
           select: {
-            id: true,
-            name: true,
-            email: true,
-            type: true
+            name: true
           }
         }
       }
     })
 
-    return NextResponse.json({
-      success: true,
-      data: task,
-      message: '任务创建成功'
-    }, { status: 201 })
-
-  } catch (error: any) {
-    console.error('创建任务失败:', error)
+    return NextResponse.json({ task }, { status: 201 })
+  } catch (error) {
+    console.error('Error creating task:', error)
     return NextResponse.json(
-      { success: false, error: error.message },
+      { error: 'Failed to create task' },
       { status: 500 }
     )
+  } finally {
+    await prisma.$disconnect()
   }
 }

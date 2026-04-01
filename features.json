@@ -1,0 +1,286 @@
+{
+  "version": "1.0",
+  "project": "Neon Protocol MVP - Manufacturing Expert Knowledge Network",
+  "lastUpdated": "2026-04-01T13:20:00Z",
+  "features": [
+    {
+      "id": "F001",
+      "category": "authentication",
+      "description": "需求方/专家注册流程",
+      "priority": "high",
+      "steps": [
+        "选择身份类型（需求方/专家）",
+        "填写组织信息（名称、邮箱、行业）",
+        "填写 Agent 信息（名称、技能标签、钱包）",
+        "提交审核",
+        "平台验证通过"
+      ],
+      "passes": false,
+      "lastChecked": null,
+      "testResults": {
+        "unit": false,
+        "integration": false,
+        "e2e": false
+      }
+    },
+    {
+      "id": "F002",
+      "category": "task-management",
+      "description": "需求方创建任务",
+      "priority": "high",
+      "steps": [
+        "填写任务标题和描述",
+        "选择行业和地区标签",
+        "设定预算和交付时间",
+        "选择交付模板",
+        "提交任务触发匹配"
+      ],
+      "passes": false,
+      "lastChecked": null,
+      "testResults": {
+        "unit": false,
+        "integration": false,
+        "e2e": false
+      }
+    },
+    {
+      "id": "F003",
+      "category": "matching",
+      "description": "平台匹配专家 Agent",
+      "priority": "high",
+      "steps": [
+        "基于标签筛选专家",
+        "计算匹配度分数",
+        "返回候选列表（1-5个）",
+        "展示专家卡片"
+      ],
+      "passes": false,
+      "lastChecked": null,
+      "testResults": {
+        "unit": false,
+        "integration": false,
+        "e2e": false
+      }
+    },
+    {
+      "id": "F004",
+      "category": "order-management",
+      "description": "需求方选择专家并确认订单",
+      "priority": "high",
+      "steps": [
+        "查看匹配结果",
+        "选择一个专家",
+        "确认任务摘要",
+        "冻结资金（模拟）",
+        "生成订单"
+      ],
+      "passes": false,
+      "lastChecked": null,
+      "testResults": {
+        "unit": false,
+        "integration": false,
+        "e2e": false
+      }
+    },
+    {
+      "id": "F005",
+      "category": "order-management",
+      "description": "专家接单或拒单",
+      "priority": "high",
+      "steps": [
+        "专家接收任务通知",
+        "查看任务详情",
+        "评估能否回答",
+        "接单：锁定保证金",
+        "拒单：提交理由"
+      ],
+      "passes": false,
+      "lastChecked": null,
+      "testResults": {
+        "unit": false,
+        "integration": false,
+        "e2e": false
+      }
+    },
+    {
+      "id": "F006",
+      "category": "delivery",
+      "description": "专家提交交付成果",
+      "priority": "high",
+      "steps": [
+        "填写执行摘要",
+        "填写核心结论",
+        "逐问题回答",
+        "填写风险与假设",
+        "提交交付物"
+      ],
+      "passes": false,
+      "lastChecked": null,
+      "testResults": {
+        "unit": false,
+        "integration": false,
+        "e2e": false
+      }
+    },
+    {
+      "id": "F007",
+      "category": "review",
+      "description": "平台初步审核",
+      "priority": "high",
+      "steps": [
+        "格式完整性检查",
+        "问题覆盖检查",
+        "有效性检查",
+        "通过或退回"
+      ],
+      "passes": false,
+      "lastChecked": null,
+      "testResults": {
+        "unit": false,
+        "integration": false,
+        "e2e": false
+      }
+    },
+    {
+      "id": "F008",
+      "category": "review",
+      "description": "需求方验收交付",
+      "priority": "high",
+      "steps": [
+        "查看交付物",
+        "可选评分",
+        "验收通过或要求修改",
+        "确认解锁资金"
+      ],
+      "passes": false,
+      "lastChecked": null,
+      "testResults": {
+        "unit": false,
+        "integration": false,
+        "e2e": false
+      }
+    },
+    {
+      "id": "F009",
+      "category": "payment",
+      "description": "资金流转（模拟托管）",
+      "priority": "medium",
+      "steps": [
+        "需求方充值（模拟）",
+        "任务资金锁定",
+        "专家保证金锁定",
+        "任务完成释放资金",
+        "异常情况退款"
+      ],
+      "passes": false,
+      "lastChecked": null,
+      "testResults": {
+        "unit": false,
+        "integration": false,
+        "e2e": false
+      }
+    },
+    {
+      "id": "F010",
+      "category": "ui-core",
+      "description": "3个核心页面实现（Landing、AI澄清、Agent市场）",
+      "priority": "high",
+      "steps": [
+        "Landing 页（需求输入）",
+        "AI 澄清页（逐步提问）",
+        "Agent 市场页（匹配展示）",
+        "深色科技风格设计",
+        "响应式布局"
+      ],
+      "passes": false,
+      "lastChecked": null,
+      "testResults": {
+        "unit": false,
+        "integration": false,
+        "e2e": false
+      }
+    },
+    {
+      "id": "F011",
+      "category": "ui-dashboard",
+      "description": "控制台页面（需求方/专家）",
+      "priority": "medium",
+      "steps": [
+        "需求方控制台（任务列表、统计）",
+        "专家控制台（订单列表、收益）",
+        "钱包页面（余额、流水）",
+        "订单详情页"
+      ],
+      "passes": false,
+      "lastChecked": null,
+      "testResults": {
+        "unit": false,
+        "integration": false,
+        "e2e": false
+      }
+    },
+    {
+      "id": "F012",
+      "category": "backend-api",
+      "description": "后端 API（Prisma + SQLite）",
+      "priority": "high",
+      "steps": [
+        "Prisma schema 定义（Organization、Agent、Task、Order）",
+        "REST API 端点（CRUD）",
+        "状态机实现",
+        "资金台账系统"
+      ],
+      "passes": false,
+      "lastChecked": null,
+      "testResults": {
+        "unit": false,
+        "integration": false,
+        "e2e": false
+      }
+    }
+  ],
+  "sprints": [
+    {
+      "id": "Sprint-01",
+      "title": "项目基础设施",
+      "features": ["F010"],
+      "status": "not-started"
+    },
+    {
+      "id": "Sprint-02",
+      "title": "用户注册流程",
+      "features": ["F001"],
+      "status": "not-started"
+    },
+    {
+      "id": "Sprint-03",
+      "title": "任务创建与匹配",
+      "features": ["F002", "F003"],
+      "status": "not-started"
+    },
+    {
+      "id": "Sprint-04",
+      "title": "订单与接单流程",
+      "features": ["F004", "F005"],
+      "status": "not-started"
+    },
+    {
+      "id": "Sprint-05",
+      "title": "交付与审核",
+      "features": ["F006", "F007", "F008"],
+      "status": "not-started"
+    },
+    {
+      "id": "Sprint-06",
+      "title": "资金流转",
+      "features": ["F009"],
+      "status": "not-started"
+    },
+    {
+      "id": "Sprint-07",
+      "title": "控制台与后端",
+      "features": ["F011", "F012"],
+      "status": "not-started"
+    }
+  ]
+}

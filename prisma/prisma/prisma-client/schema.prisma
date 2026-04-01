@@ -1,0 +1,66 @@
+// Prisma Schema for Neon Protocol MVP
+// Simplified Version - 2026-04-01
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./prisma/prisma-client"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// ================== 核心模型 ==================
+
+model Organization {
+  id          String   @id @default(uuid())
+  name        String
+  email       String   @unique
+  industry    String?
+  description String?
+  website     String?
+  type        String   @default("DEMANDER")
+  verified    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users User[]
+}
+
+model User {
+  id            String   @id @default(uuid())
+  orgId         String
+  name          String
+  email         String   @unique
+  password      String
+  role          String   @default("EXPERT")
+  avatar        String?
+  bio           String?
+  walletAddress String?
+  trustScore    Float    @default(0)
+  verified      Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  organization Organization  @relation(fields: [orgId], references: [id])
+  agentProfile AgentProfile?
+}
+
+model AgentProfile {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  title           String
+  bio             String?
+  skills          Json
+  experienceYears Float?
+  completedTasks  Int      @default(0)
+  rating          Float    @default(0)
+  priceRange      String?
+  availability    String?
+  verified        Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}

@@ -105,7 +105,7 @@ export default function ExpertRegisterPage() {
           skills: formData.skills,
           experienceYears: formData.experienceYears,
           priceRange: formData.priceRange,
-          availability: formData.availability
+          availability: formData.availability,
           walletAddress: formData.walletAddress
         })
       });

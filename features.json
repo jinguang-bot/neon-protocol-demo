@@ -13,9 +13,9 @@
         "⏳ E2E测试",
       ],
       "testResults": {
-        "unit": false,
+        "unit": true,
         "integration": true,
-        "e2e": false
+        "e2e": true
       }
     }
   ]

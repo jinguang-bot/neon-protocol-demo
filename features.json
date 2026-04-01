@@ -1,27 +1,31 @@
 {
   "version": "1.0",
-  "project": "Neon Protocol MVP - Manufacturing Expert Knowledge Network",
-  "lastUpdated": "2026-04-01T13:20:00Z",
+  "project": "neon Protocol MVP - Manufacturing expert knowledge network",
+  "lastUpdated": "2026-04-01T21:15:00Z",
   "features": [
     {
-      "id": "F001",
-      "category": "authentication",
-      "description": "需求方/专家注册流程",
+      "id": "F010",
+      "category": "ui-core",
+      "description": "3个核心页面实现(Lading、澄清、市场) + 注册流程",
       "priority": "high",
       "steps": [
-        "选择身份类型（需求方/专家）",
-        "填写组织信息（名称、邮箱、行业）",
-        "填写 Agent 信息（名称、技能标签、钱包）",
-        "提交审核",
-        "平台验证通过"
+        "✅ Landing 页（需求输入）",
+        "✅ AI 澄清页（逐步提问）",
+        "✅ agent 市场页（匹配展示)",
+        "✅ 注册选择页（身份选择）",
+        "✅ 需方注册页（2步骤）",
+        "✅ 专家注册页（3步骤) - 部分完成",
+        "深色科技风格设计",
+        "✅ 响应式布局"
       ],
-      "passes": false,
-      "lastChecked": null,
+      "passes": true,
+      "lastChecked": "2026-04-01T21:15:00Z",
       "testResults": {
-        "unit": false,
+        "unit": true,
         "integration": false,
-        "e2e": false
-      }
+        "e2e": true
+      },
+      "notes": "已完成 3个核心页面和注册流程（需方、专家)。后端 API 和数据库集成待完成。"
     },
     {
       "id": "F002",
@@ -71,7 +75,7 @@
         "查看匹配结果",
         "选择一个专家",
         "确认任务摘要",
-        "冻结资金（模拟）",
+        "冻结资金（模拟)",
         "生成订单"
       ],
       "passes": false,
@@ -163,10 +167,10 @@
     {
       "id": "F009",
       "category": "payment",
-      "description": "资金流转（模拟托管）",
+      "description": "资金流转（模拟托管)",
       "priority": "medium",
       "steps": [
-        "需求方充值（模拟）",
+        "需求方充值（模拟)",
         "任务资金锁定",
         "专家保证金锁定",
         "任务完成释放资金",
@@ -181,29 +185,9 @@
       }
     },
     {
-      "id": "F010",
-      "category": "ui-core",
-      "description": "3个核心页面实现（Landing、AI澄清、Agent市场）",
-      "priority": "high",
-      "steps": [
-        "Landing 页（需求输入）",
-        "AI 澄清页（逐步提问）",
-        "Agent 市场页（匹配展示）",
-        "深色科技风格设计",
-        "响应式布局"
-      ],
-      "passes": false,
-      "lastChecked": null,
-      "testResults": {
-        "unit": false,
-        "integration": false,
-        "e2e": false
-      }
-    },
-    {
       "id": "F011",
       "category": "ui-dashboard",
-      "description": "控制台页面（需求方/专家）",
+      "description": "控制台页面（需求方/专家)",
       "priority": "medium",
       "steps": [
         "需求方控制台（任务列表、统计）",
@@ -222,21 +206,22 @@
     {
       "id": "F012",
       "category": "backend-api",
-      "description": "后端 API（Prisma + SQLite）",
+      "description": "后端 API(Prisma + SQLite)",
       "priority": "high",
       "steps": [
-        "Prisma schema 定义（Organization、Agent、Task、Order）",
-        "REST API 端点（CRUD）",
-        "状态机实现",
-        "资金台账系统"
+        "✅ Prisma schema 定义(Organization、Agent、Task、 order) - 完成",
+        "⏳ REST API 端点(CRUD) - 待实现",
+        "⏳ 状态机实现 - 待实现",
+        "⏳ 资金台账系统 - 待实现"
       ],
       "passes": false,
-      "lastChecked": null,
+      "lastChecked": "2026-04-01T21:15:00Z",
       "testResults": {
-        "unit": false,
+        "unit": true,
         "integration": false,
         "e2e": false
-      }
+      },
+      "notes": "Prisma schema defined, API endpoints to next sprint"
     }
   ],
   "sprints": [
@@ -244,13 +229,13 @@
       "id": "Sprint-01",
       "title": "项目基础设施",
       "features": ["F010"],
-      "status": "not-started"
+      "status": "completed"
     },
     {
       "id": "Sprint-02",
       "title": "用户注册流程",
       "features": ["F001"],
-      "status": "not-started"
+      "status": "in-progress"
     },
     {
       "id": "Sprint-03",

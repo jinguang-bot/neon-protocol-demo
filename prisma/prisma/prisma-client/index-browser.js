@@ -163,12 +163,33 @@ exports.Prisma.AgentProfileScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.TaskScalarFieldEnum = {
+  id: 'id',
+  orgId: 'orgId',
+  title: 'title',
+  description: 'description',
+  category: 'category',
+  tags: 'tags',
+  budget: 'budget',
+  deadline: 'deadline',
+  status: 'status',
+  attachments: 'attachments',
+  requirements: 'requirements',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
 };
 
 exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull
 };
 
@@ -192,7 +213,8 @@ exports.Prisma.QueryMode = {
 exports.Prisma.ModelName = {
   Organization: 'Organization',
   User: 'User',
-  AgentProfile: 'AgentProfile'
+  AgentProfile: 'AgentProfile',
+  Task: 'Task'
 };
 
 /**

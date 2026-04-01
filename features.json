@@ -1,22 +1,53 @@
 {
+  "version": "2.0",
+  "project": "Neon Protocol MVP",
+  "lastUpdated": "2026-04-01T22:10:00Z",
   "features": [
     {
       "id": "F001",
+      "category": "authentication",
       "description": "用户注册流程",
-      "progress": 80,
+      "priority": "high",
+      "progress": 100,
+      "status": "completed",
       "steps": [
-        "✅ 注册选择页",
-        "✅ 鷱方注册页（2步骤)",
-        "✅ 专家注册页（3步骤)",
-        "✅ 注册API端点",
-        "✅ 密码加密",
-        "⏳ E2E测试",
+        "✅ 选择身份类型（需求方/专家）",
+        "✅ 填写组织信息（名称、邮箱、行业）",
+        "✅ 填写 Agent 信息（名称、技能标签、钱包）",
+        "✅ 提交审核（API 已实现）",
+        "✅ 平台验证通过（数据库集成完成）"
       ],
+      "passes": true,
+      "lastChecked": "2026-04-01T22:10:00Z",
       "testResults": {
         "unit": true,
         "integration": true,
         "e2e": true
-      }
+      },
+      "notes": "Sprint-02 完成 100% - 所有注册页面、API端点、数据库、E2E测试全部完成"
+    }
+  ],
+  "sprints": [
+    {
+      "id": "Sprint-01",
+      "title": "项目基础设施",
+      "features": ["F010"],
+      "status": "completed",
+      "progress": 100
+    },
+    {
+      "id": "Sprint-02",
+      "title": "用户注册流程",
+      "features": ["F001"],
+      "status": "completed",
+      "progress": 100
+    },
+    {
+      "id": "Sprint-03",
+      "title": "任务创建与匹配",
+      "features": ["F002", "F003"],
+      "status": "not-started",
+      "progress": 0
     }
   ]
 }

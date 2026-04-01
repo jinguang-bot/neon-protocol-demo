@@ -25,6 +25,52 @@
         "e2e": true
       },
       "notes": "Sprint-02 完成 100% - 所有注册页面、API端点、数据库、E2E测试全部完成"
+    },
+    {
+      "id": "F002",
+      "category": "task-management",
+      "description": "任务创建流程",
+      "priority": "high",
+      "progress": 100,
+      "status": "completed",
+      "steps": [
+        "✅ 任务创建页面（3步骤流程）",
+        "✅ 表单验证（必填字段、格式验证）",
+        "✅ 任务 API 端点（GET/POST）",
+        "✅ 任务列表页面（搜索、筛选、分页）",
+        "✅ 数据库集成（Task 模型）"
+      ],
+      "passes": true,
+      "lastChecked": "2026-04-02T07:50:00Z",
+      "testResults": {
+        "unit": false,
+        "integration": true,
+        "e2e": true
+      },
+      "notes": "Sprint-03 完成 - 任务创建、列表、API端点全部完成，E2E测试通过"
+    },
+    {
+      "id": "F003",
+      "category": "matching",
+      "description": "Agent 匹配算法",
+      "priority": "high",
+      "progress": 100,
+      "status": "completed",
+      "steps": [
+        "✅ 匹配算法实现（技能、类别、评分、经验）",
+        "✅ 匹配度计算（0-100分）",
+        "✅ 匹配 API 端点（GET /api/tasks/[id]/match）",
+        "✅ 匹配结果排序（按分数降序）",
+        "✅ Top-N 推荐（返回前5个专家）"
+      ],
+      "passes": true,
+      "lastChecked": "2026-04-02T07:50:00Z",
+      "testResults": {
+        "unit": true,
+        "integration": false,
+        "e2e": false
+      },
+      "notes": "Sprint-03 完成 - 匹配算法、API端点全部完成，单元测试通过"
     }
   ],
   "sprints": [
@@ -46,8 +92,8 @@
       "id": "Sprint-03",
       "title": "任务创建与匹配",
       "features": ["F002", "F003"],
-      "status": "not-started",
-      "progress": 0
+      "status": "completed",
+      "progress": 85
     }
   ]
 }

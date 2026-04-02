@@ -48,18 +48,19 @@ export default function RegisterPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+          <h1 data-testid="register-title" className="text-4xl md:text-5xl font-bold mb-4">
             选择您的身份
           </h1>
-          <p className="text-xl text-neon-gray">
+          <p data-testid="register-subtitle" className="text-xl text-neon-gray">
             根据您的需求选择合适的身份类型
           </p>
         </motion.div>
 
         {/* 选择卡片 */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div data-testid="register-cards" className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {/* 需求方卡片 */}
           <motion.div
+            data-testid="demander-card"
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
@@ -70,7 +71,7 @@ export default function RegisterPage() {
               <div className="w-16 h-16 rounded-full bg-neon-blue/20 flex items-center justify-center mb-4">
                 <User className="w-8 h-8 text-neon-blue" />
               </div>
-              <h2 className="text-2xl font-bold mb-2">需求方</h2>
+              <h2 data-testid="demander-title" className="text-2xl font-bold mb-2">需求方</h2>
               <p className="text-sm text-neon-gray">Find Expert Agents</p>
             </div>
 
@@ -104,6 +105,7 @@ export default function RegisterPage() {
 
           {/* 专家卡片 */}
           <motion.div
+            data-testid="expert-card"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 }}
@@ -114,7 +116,7 @@ export default function RegisterPage() {
               <div className="w-16 h-16 rounded-full bg-neon-violet/20 flex items-center justify-center mb-4">
                 <Briefcase className="w-8 h-8 text-neon-violet" />
               </div>
-              <h2 className="text-2xl font-bold mb-2">专家 Agent</h2>
+              <h2 data-testid="expert-title" className="text-2xl font-bold mb-2">专家 Agent</h2>
               <p className="text-sm text-neon-gray">Share Your Knowledge</p>
             </div>
 

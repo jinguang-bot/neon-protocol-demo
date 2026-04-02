@@ -405,7 +405,7 @@ export default function TaskDetailPage() {
                 {matchedAgents.map((agent, index) => (
                   <motion.div
                     key={agent.id}
-                    data-testid="agent-card"
+                    data-testid={`agent-card-${index}`}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.4 + index * 0.1 }}

@@ -1,69 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+import { OrderService } from '@/lib/order-service'
 
-// GET /api/orders - 获取订单列表
+/**
+ * GET /api/orders
+ * 获取订单列表
+ */
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams
-    const status = searchParams.get('status')
-    const organizationId = searchParams.get('organizationId')
+    const organizationId = searchParams.get('organizationId') || undefined
+    const agentId = searchParams.get('agentId') || undefined
+    const status = searchParams.get('status') as any || undefined
     const page = parseInt(searchParams.get('page') || '1')
     const limit = parseInt(searchParams.get('limit') || '10')
-    const skip = (page - 1) * limit
 
-    const where: any = {}
-    if (status) {
-      where.status = status
-    }
-    if (organizationId) {
-      where.organizationId = organizationId
-    }
-
-    const [orders, total] = await Promise.all([
-      prisma.order.findMany({
-        where,
-        include: {
-          task: {
-            select: {
-              id: true,
-              title: true,
-              budget: true
-            }
-          },
-          agent: {
-            select: {
-              id: true,
-              name: true,
-              avatar: true
-            }
-          },
-          organization: {
-            select: {
-              id: true,
-              name: true
-            }
-          }
-        },
-        skip,
-        take: limit,
-        orderBy: {
-          createdAt: 'desc'
-        }
-      }),
-      prisma.order.count({ where })
-    ])
-
-    return NextResponse.json({
-      orders,
-      pagination: {
-        page,
-        limit,
-        total,
-        totalPages: Math.ceil(total / limit)
-      }
+    const result = await OrderService.getOrders({
+      organizationId,
+      agentId,
+      status,
+      page,
+      limit
     })
+
+    return NextResponse.json(result)
   } catch (error) {
-    console.error('Failed to fetch orders:', error)
+    console.error('Error fetching orders:', error)
     return NextResponse.json(
       { error: 'Failed to fetch orders' },
       { status: 500 }
@@ -71,68 +32,59 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST /api/orders - 创建新订单
+/**
+ * POST /api/orders
+ * 创建新订单
+ */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const {
-      taskId,
-      agentId,
-      organizationId,
-      message,
-      milestones
-    } = body
 
     // 验证必填字段
-    if (!taskId || !agentId || !organizationId) {
+    const { taskId, agentId, organizationId, milestones, message, paymentMethod } = body
+
+    if (!taskId || !agentId || !organizationId || !milestones || !paymentMethod) {
       return NextResponse.json(
-        { error: 'Missing required fields: taskId, agentId, organizationId' },
+        { error: 'Missing required fields' },
         { status: 400 }
       )
     }
 
     // 验证里程碑
-    if (!milestones || !Array.isArray(milestones) || milestones.length === 0) {
+    if (!Array.isArray(milestones) || milestones.length === 0) {
       return NextResponse.json(
         { error: 'At least one milestone is required' },
         { status: 400 }
       )
     }
 
-    // 计算总金额
-    const totalAmount = milestones.reduce((sum: number, m: any) => sum + m.amount, 0)
-
-    // 创建订单
-    const order = await prisma.order.create({
-      data: {
-        taskId,
-        agentId,
-        organizationId,
-        status: 'pending',
-        totalAmount,
-        message,
-        milestones: {
-          create: milestones.map((m: any, index: number) => ({
-            title: m.title,
-            description: m.description,
-            amount: m.amount,
-            dueDate: new Date(m.dueDate),
-            status: 'pending',
-            order: index
-          }))
-        }
-      },
-      include: {
-        task: true,
-        agent: true,
-        organization: true,
-        milestones: true
-      }
+    const order = await OrderService.createOrder({
+      taskId,
+      agentId,
+      organizationId,
+      milestones: milestones.map((m: any) => ({
+        title: m.title,
+        description: m.description,
+        amount: parseFloat(m.amount),
+        dueDate: m.dueDate ? new Date(m.dueDate) : undefined
+      })),
+      message,
+      paymentMethod
     })
 
     return NextResponse.json(order, { status: 201 })
   } catch (error) {
-    console.error('Failed to create order:', error)
+    console.error('Error creating order:', error)
+
+    if (error instanceof Error) {
+      if (error.message === 'Task not found' || error.message === 'Agent not found') {
+        return NextResponse.json(
+          { error: error.message },
+          { status: 404 }
+        )
+      }
+    }
+
     return NextResponse.json(
       { error: 'Failed to create order' },
       { status: 500 }

@@ -1,58 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+import { OrderService } from '@/lib/order-service'
 
-// GET /api/orders/[id] - 获取订单详情
+/**
+ * GET /api/orders/[id]
+ * 获取订单详情
+ */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const order = await prisma.order.findUnique({
-      where: { id: params.id },
-      include: {
-        task: {
-          select: {
-            id: true,
-            title: true,
-            description: true,
-            budget: true,
-            deadline: true
-          }
-        },
-        agent: {
-          select: {
-            id: true,
-            name: true,
-            avatar: true,
-            title: true,
-            hourlyRate: true
-          }
-        },
-        organization: {
-          select: {
-            id: true,
-            name: true,
-            email: true
-          }
-        },
-        milestones: {
-          orderBy: {
-            order: 'asc'
-          }
-        }
-      }
-    })
+    const { id } = await params
+    const order = await OrderService.getOrderById(id)
+    return NextResponse.json(order)
+  } catch (error) {
+    console.error('Error fetching order:', error)
 
-    if (!order) {
+    if (error instanceof Error && error.message === 'Order not found') {
       return NextResponse.json(
         { error: 'Order not found' },
         { status: 404 }
       )
     }
 
-    return NextResponse.json(order)
-  } catch (error) {
-    console.error('Failed to fetch order:', error)
     return NextResponse.json(
       { error: 'Failed to fetch order' },
       { status: 500 }
@@ -60,43 +30,57 @@ export async function GET(
   }
 }
 
-// PUT /api/orders/[id] - 更新订单
+/**
+ * PUT /api/orders/[id]
+ * 更新订单
+ */
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const body = await request.json()
-    const { status, message } = body
+    const { action, message, status } = body
 
-    // 验证状态值
-    const validStatuses = ['pending', 'confirmed', 'in_progress', 'completed', 'cancelled']
-    if (status && !validStatuses.includes(status)) {
+    let updatedOrder
+
+    switch (action) {
+      case 'confirm':
+        updatedOrder = await OrderService.confirmOrder(id)
+        break
+
+      case 'start':
+        updatedOrder = await OrderService.startOrder(id)
+        break
+
+      case 'complete':
+        updatedOrder = await OrderService.completeOrder(id)
+        break
+
+      case 'cancel':
+        updatedOrder = await OrderService.cancelOrder(id, message)
+        break
+
+      default:
+        // 通用更新（状态或消息）
+        updatedOrder = await OrderService.updateOrderStatus(id, {
+          status,
+          message
+        })
+    }
+
+    return NextResponse.json(updatedOrder)
+  } catch (error) {
+    console.error('Error updating order:', error)
+
+    if (error instanceof Error && error.message === 'Order not found') {
       return NextResponse.json(
-        { error: `Invalid status. Must be one of: ${validStatuses.join(', ')}` },
-        { status: 400 }
+        { error: 'Order not found' },
+        { status: 404 }
       )
     }
 
-    const updateData: any = {}
-    if (status) updateData.status = status
-    if (message) updateData.message = message
-    updateData.updatedAt = new Date()
-
-    const order = await prisma.order.update({
-      where: { id: params.id },
-      data: updateData,
-      include: {
-        task: true,
-        agent: true,
-        organization: true,
-        milestones: true
-      }
-    })
-
-    return NextResponse.json(order)
-  } catch (error) {
-    console.error('Failed to update order:', error)
     return NextResponse.json(
       { error: 'Failed to update order' },
       { status: 500 }
@@ -104,44 +88,45 @@ export async function PUT(
   }
 }
 
-// DELETE /api/orders/[id] - 删除订单（仅限待确认状态）
+/**
+ * DELETE /api/orders/[id]
+ * 删除订单（仅限 PENDING 状态）
+ */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // 检查订单状态
-    const order = await prisma.order.findUnique({
-      where: { id: params.id },
-      select: { status: true }
-    })
+    const { id } = await params
+    const order = await OrderService.getOrderById(id)
 
-    if (!order) {
-      return NextResponse.json(
-        { error: 'Order not found' },
-        { status: 404 }
-      )
-    }
-
-    // 只允许删除待确认的订单
-    if (order.status !== 'pending') {
+    // 仅允许删除待确认订单
+    if (order.status !== 'PENDING') {
       return NextResponse.json(
         { error: 'Only pending orders can be deleted' },
         { status: 400 }
       )
     }
 
-    // 删除订单（会级联删除里程碑）
+    // 使用 Prisma 删除订单（级联删除里程碑）
+    const { PrismaClient } = await import('@prisma/client')
+    const prisma = new PrismaClient()
+
     await prisma.order.delete({
-      where: { id: params.id }
+      where: { id }
     })
 
-    return NextResponse.json(
-      { message: 'Order deleted successfully' },
-      { status: 200 }
-    )
+    return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Failed to delete order:', error)
+    console.error('Error deleting order:', error)
+
+    if (error instanceof Error && error.message === 'Order not found') {
+      return NextResponse.json(
+        { error: 'Order not found' },
+        { status: 404 }
+      )
+    }
+
     return NextResponse.json(
       { error: 'Failed to delete order' },
       { status: 500 }

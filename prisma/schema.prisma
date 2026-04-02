@@ -10,6 +10,29 @@ datasource db {
   url      = "file:./dev.db"
 }
 
+// ================== 枚举类型 ==================
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  USDC
+  ETH
+  CREDIT_CARD
+}
+
+enum MilestoneStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
 // ================== 核心模型 ==================
 
 model Organization {
@@ -91,15 +114,16 @@ model Task {
 // ================== 订单系统 ==================
 
 model Order {
-  id              String   @id @default(uuid())
+  id              String        @id @default(uuid())
   taskId          String
   agentId         String
   organizationId  String
-  status          String   @default("pending") // pending, confirmed, in_progress, completed, cancelled
+  status          OrderStatus   @default(PENDING)
   totalAmount     Float
   message         String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  paymentMethod   PaymentMethod @default(USDC)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 
   task            Task        @relation(fields: [taskId], references: [id])
   agent           User        @relation("AgentOrders", fields: [agentId], references: [id])
@@ -108,16 +132,17 @@ model Order {
 }
 
 model Milestone {
-  id              String   @id @default(uuid())
+  id              String          @id @default(uuid())
   orderId         String
   title           String
   description     String
   amount          Float
-  dueDate         DateTime
-  status          String   @default("pending") // pending, completed, paid
-  order           Int      @default(0)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  dueDate         DateTime?
+  status          MilestoneStatus @default(PENDING)
+  order           Int             @default(0)
+  completedAt     DateTime?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
 
   order_record    Order   @relation(fields: [orderId], references: [id])
 }

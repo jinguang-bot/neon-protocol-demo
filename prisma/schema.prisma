@@ -122,6 +122,15 @@ model Order {
   totalAmount     Float
   message         String?
   paymentMethod   PaymentMethod @default(USDC)
+  progress        Int           @default(0)  // 订单完成度 0-100
+  
+  // 交付相关字段（保留用于兼容）
+  deliverables    Json?         // 交付物列表
+  summary         String?       // 项目总结
+  notes           String?       // 补充说明
+  attachments     Json?         // 附件文件列表
+  submittedAt     DateTime?     // 提交时间
+  
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 
@@ -129,6 +138,7 @@ model Order {
   agent           User        @relation("AgentOrders", fields: [agentId], references: [id])
   organization    Organization @relation(fields: [organizationId], references: [id])
   milestones      Milestone[]
+  deliveries      Delivery[]
 }
 
 model Milestone {
@@ -145,4 +155,27 @@ model Milestone {
   updatedAt       DateTime        @updatedAt
 
   order_record    Order   @relation(fields: [orderId], references: [id])
+}
+
+// ================== 交付系统 ==================
+
+model Delivery {
+  id              String    @id @default(uuid())
+  orderId         String
+  summary         String    // 成果摘要
+  detailedAnswer  String    // 详细答案（Markdown）
+  hoursSpent      Float     @default(0)  // 工作时长
+  notes           String?   // 补充说明
+  files           Json?     // 附件文件列表
+  status          String    @default("PENDING_REVIEW")  // PENDING_REVIEW, PLATFORM_APPROVED, PLATFORM_REJECTED, CLIENT_APPROVED, CLIENT_REJECTED
+  submittedAt     DateTime  @default(now())
+  reviewedAt      DateTime? // 审核时间
+  reviewNotes     String?   // 审核意见
+  platformReviewerId String? // 平台审核人ID
+  clientReviewedAt DateTime? // 需求方审核时间
+  clientReviewNotes String? // 需求方审核意见
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  order           Order     @relation(fields: [orderId], references: [id])
 }

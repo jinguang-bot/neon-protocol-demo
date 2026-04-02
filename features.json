@@ -163,43 +163,145 @@
         "e2e": false
       },
       "notes": "Sprint-05 完成 - 订单API端点、Prisma schema更新、数据库表创建完成，GET API验证通过（200 OK）"
+    },
+    {
+      "id": "F008",
+      "category": "delivery",
+      "description": "专家提交成果",
+      "priority": "high",
+      "progress": 100,
+      "status": "completed",
+      "steps": [
+        "✅ 交付表单页面（4步骤流程）",
+        "✅ 结构化答案保存（摘要、详细答案、附件）",
+        "✅ API 路由（/api/orders/[id]/deliver）",
+        "✅ Prisma Delivery 模型",
+        "✅ E2E 测试（16个用例，15个通过）"
+      ],
+      "passes": true,
+      "lastChecked": "2026-04-02",
+      "testResults": {
+        "unit": false,
+        "integration": true,
+        "e2e": true
+      },
+      "notes": "Sprint-06 完成 - 专家提交成果功能、交付表单、API、数据库、E2E测试全部完成"
+    },
+    {
+      "id": "F009",
+      "category": "review",
+      "description": "平台审核 + 需求方审核",
+      "priority": "high",
+      "progress": 100,
+      "status": "completed",
+      "steps": [
+        "✅ 审核API端点（POST /api/orders/[id]/review）",
+        "✅ 平台审核逻辑（通过/拒绝）",
+        "✅ 需求方审核逻辑（通过/拒绝）",
+        "✅ 订单状态流转",
+        "✅ E2E 测试覆盖"
+      ],
+      "passes": true,
+      "lastChecked": "2026-04-02",
+      "testResults": {
+        "unit": false,
+        "integration": true,
+        "e2e": true
+      },
+      "notes": "Sprint-06 完成 - 双重审核功能、API、状态流转、E2E测试全部完成"
+    },
+    {
+      "id": "F010",
+      "category": "settlement",
+      "description": "资金解锁与结算",
+      "priority": "high",
+      "progress": 0,
+      "status": "not-started",
+      "steps": [
+        "❌ 资金解锁页面",
+        "❌ API 路由（/api/orders/unlock）",
+        "❌ 资金释放逻辑",
+        "❌ 完整 E2E 测试（端到端）",
+        "❌ 验收：跑通完整闭环"
+      ],
+      "passes": false,
+      "lastChecked": null,
+      "testResults": {
+        "unit": false,
+        "integration": false,
+        "e2e": false
+      },
+      "notes": "Sprint-07 待开发 - 资金结算与端到端测试"
     }
   ],
   "sprints": [
     {
       "id": "Sprint-01",
       "title": "项目基础设施",
-      "features": ["F010"],
+      "features": [
+        "F010"
+      ],
       "status": "completed",
       "progress": 100
     },
     {
       "id": "Sprint-02",
       "title": "用户注册流程",
-      "features": ["F001"],
+      "features": [
+        "F001"
+      ],
       "status": "completed",
       "progress": 100
     },
     {
       "id": "Sprint-03",
       "title": "任务创建与匹配",
-      "features": ["F002", "F003"],
+      "features": [
+        "F002",
+        "F003"
+      ],
       "status": "completed",
       "progress": 100
     },
     {
       "id": "Sprint-04",
       "title": "任务详情与订单流程",
-      "features": ["F004", "F005", "F006"],
+      "features": [
+        "F004",
+        "F005",
+        "F006"
+      ],
       "status": "completed",
       "progress": 100
     },
     {
       "id": "Sprint-05",
       "title": "API集成与订单管理",
-      "features": ["F007"],
+      "features": [
+        "F007"
+      ],
       "status": "completed",
       "progress": 100
+    },
+    {
+      "id": "Sprint-06",
+      "title": "专家提交与审核",
+      "features": [
+        "F008",
+        "F009"
+      ],
+      "status": "completed",
+      "progress": 100,
+      "notes": "交付表单、交付API、审核API、Prisma Delivery模型、E2E测试15/16通过（93.75%）"
+    },
+    {
+      "id": "Sprint-07",
+      "title": "资金结算与端到端测试",
+      "features": [
+        "F010"
+      ],
+      "status": "not-started",
+      "progress": 0
     }
   ]
 }

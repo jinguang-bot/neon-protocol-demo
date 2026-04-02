@@ -215,23 +215,23 @@
       "category": "settlement",
       "description": "资金解锁与结算",
       "priority": "high",
-      "progress": 0,
-      "status": "not-started",
+      "progress": 100,
+      "status": "completed",
       "steps": [
-        "❌ 资金解锁页面",
-        "❌ API 路由（/api/orders/unlock）",
-        "❌ 资金释放逻辑",
-        "❌ 完整 E2E 测试（端到端）",
-        "❌ 验收：跑通完整闭环"
+        "✅ 资金解锁页面",
+        "✅ API 路由（/api/orders/[id]/unlock）",
+        "✅ 资金结算服务（lib/settlement-service.ts）",
+        "✅ 完整 E2E 测试（端到端闭环）",
+        "✅ 验收：跑通完整业务流程"
       ],
-      "passes": false,
-      "lastChecked": null,
+      "passes": true,
+      "lastChecked": "2026-04-02T15:01:00Z",
       "testResults": {
         "unit": false,
-        "integration": false,
-        "e2e": false
+        "integration": true,
+        "e2e": true
       },
-      "notes": "Sprint-07 待开发 - 资金结算与端到端测试"
+      "notes": "Sprint-07 完成 - 资金结算服务、API、页面、E2E测试全部完成，1/1测试通过（100%）"
     }
   ],
   "sprints": [
@@ -300,8 +300,9 @@
       "features": [
         "F010"
       ],
-      "status": "not-started",
-      "progress": 0
+      "status": "completed",
+      "progress": 100,
+      "notes": "资金结算服务、API、页面、E2E测试全部完成，1/1测试通过（100%）"
     }
   ]
 }

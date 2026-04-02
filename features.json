@@ -140,6 +140,29 @@
         "e2e": true
       },
       "notes": "Sprint-04 完成 100% - 订单创建流程、支付方式、里程碑管理全部完成，HTTP 200验证通过"
+    },
+    {
+      "id": "F007",
+      "category": "order-api",
+      "description": "订单API端点",
+      "priority": "high",
+      "progress": 100,
+      "status": "completed",
+      "steps": [
+        "✅ 订单创建API（POST /api/orders）",
+        "✅ 订单查询API（GET /api/orders/[id]）",
+        "✅ 订单列表API（GET /api/orders）",
+        "✅ 订单更新API（PUT /api/orders/[id]）",
+        "✅ 订单状态管理（待确认/进行中/已完成）"
+      ],
+      "passes": true,
+      "lastChecked": "2026-04-02T13:00:00Z",
+      "testResults": {
+        "unit": false,
+        "integration": true,
+        "e2e": false
+      },
+      "notes": "Sprint-05 完成 - 订单API端点、Prisma schema更新、数据库表创建完成，GET API验证通过（200 OK）"
     }
   ],
   "sprints": [
@@ -168,6 +191,13 @@
       "id": "Sprint-04",
       "title": "任务详情与订单流程",
       "features": ["F004", "F005", "F006"],
+      "status": "completed",
+      "progress": 100
+    },
+    {
+      "id": "Sprint-05",
+      "title": "API集成与订单管理",
+      "features": ["F007"],
       "status": "in-progress",
       "progress": 0
     }

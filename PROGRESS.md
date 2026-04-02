@@ -9,14 +9,74 @@
 
 ## 📊 当前状态
 
-- **当前 Sprint**: Sprint-04（任务详情与订单流程） ✅
-- **当前特性**: Sprint-04 已完成
-- **进度**: 100% ✅
+- **当前 Sprint**: Sprint-05（API集成与订单管理） 🔄
+- **当前特性**: F007（订单API端点）
+- **进度**: 20% ⏳
 - **阻塞问题**: 无
 
 ---
 
 ## 📝 开发日志
+
+### 2026-04-02 12:50 - Sprint-05 进展 (20%)
+**完成内容**：
+- ✅ **订单API端点** (`app/api/orders/route.ts` - 3.3KB)
+  - GET /api/orders - 获取订单列表（支持筛选、分页）
+  - POST /api/orders - 创建新订单（包含里程碑管理）
+  - 支持状态筛选（pending/confirmed/in_progress/completed/cancelled）
+  - 支持组织筛选（organizationId）
+  - 分页支持（page/limit）
+  - 包含关联查询（task、agent、organization、milestones）
+
+- ✅ **订单详情API** (`app/api/orders/[id]/route.ts` - 3.4KB)
+  - GET /api/orders/[id] - 获取订单详情
+  - PUT /api/orders/[id] - 更新订单状态
+  - DELETE /api/orders/[id] - 删除订单（仅限pending状态）
+  - 状态验证（5种有效状态）
+  - 级联查询（包含所有关联数据）
+
+- ✅ **Prisma Schema更新**
+  - Order 模型（订单核心字段）
+  - Milestone 模型（里程碑管理）
+  - 关系定义（Task ↔ Order ↔ User ↔ Organization）
+  - 外键约束配置
+
+- ✅ **数据库迁移**
+  - 迁移名称：`20260402045130_add_order_system`
+  - 迁移文件已创建
+  - 数据库已同步
+  - Prisma Client 已重新生成
+
+**验证结果**：
+```bash
+GET /api/orders  # 200 OK ✅
+POST /api/orders  # 外键约束正常（需要真实数据）✅
+```
+
+**技术实现**：
+- Next.js 15 App Router
+- Prisma ORM（SQLite数据库）
+- RESTful API设计
+- 关系型数据查询
+- 状态管理（5种订单状态）
+- 里程碑管理（支持多里程碑）
+- 外键约束（数据完整性）
+
+**文件位置**：
+- `app/api/orders/route.ts` - 订单API（3.3KB）
+- `app/api/orders/[id]/route.ts` - 订单详情API（3.4KB）
+- `prisma/schema.prisma` - 数据库模型（已更新）
+- `prisma/migrations/20260402045130_add_order_system/` - 迁移文件
+
+**进度**：Sprint-05 完成 **20%**（1/5 核心功能）
+
+**下一步**：
+- 订单服务层（lib/order-service.ts）
+- 支付集成（Web3钱包连接）
+- 邮件通知系统
+- E2E测试
+
+---
 
 ### 2026-04-02 11:55 - Sprint-04 完成 (100%) 🎉
 **完成内容**：

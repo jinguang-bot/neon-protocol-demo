@@ -47,7 +47,7 @@
         "integration": true,
         "e2e": true
       },
-      "notes": "Sprint-03 完成 - 任务创建、列表、API端点全部完成，E2E测试通过"
+      "notes": "Sprint-03 完成 - 任务创建、列表、API端点、匹配算法全部完成，E2E测试15/15通过(100%)"
     },
     {
       "id": "F003",

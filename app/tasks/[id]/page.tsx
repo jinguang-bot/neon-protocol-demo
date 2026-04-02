@@ -97,7 +97,21 @@ export default function TaskDetailPage() {
       const response = await fetch(`/api/tasks/${params.id}/match`)
       if (response.ok) {
         const data = await response.json()
-        setMatchedAgents(data.agents || [])
+        // 转换API数据格式为页面期望的格式
+        const agents = (data.matchedAgents || []).map((agent: any) => ({
+          id: agent.id,
+          name: agent.user?.name || 'Unknown',
+          avatar: agent.user?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${agent.id}`,
+          title: agent.title || 'Expert',
+          skills: Array.isArray(agent.skills) ? agent.skills : [],
+          rating: agent.rating || 0,
+          completedTasks: agent.completedTasks || 0,
+          matchScore: agent.score || 0,
+          matchReasons: agent.matchReason ? [agent.matchReason] : [],
+          verified: agent.verified || false,
+          hourlyRate: agent.priceRange ? parseInt(agent.priceRange.replace(/[^0-9]/g, '')) : undefined
+        }))
+        setMatchedAgents(agents)
       } else {
         // 使用模拟数据
         const mockAgents: MatchedAgent[] = [
@@ -252,7 +266,10 @@ export default function TaskDetailPage() {
                   任务 ID: {task.id}
                 </span>
               </div>
-              <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              <h1 
+                data-testid="task-title"
+                className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent"
+              >
                 {task.title}
               </h1>
             </div>
@@ -264,6 +281,7 @@ export default function TaskDetailPage() {
           <div className="lg:col-span-2 space-y-6">
             {/* Task Details */}
             <motion.div
+              data-testid="task-detail"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
@@ -368,6 +386,7 @@ export default function TaskDetailPage() {
           {/* Matched Agents */}
           <div className="lg:col-span-1">
             <motion.div
+              data-testid="matched-agents"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
@@ -386,6 +405,7 @@ export default function TaskDetailPage() {
                 {matchedAgents.map((agent, index) => (
                   <motion.div
                     key={agent.id}
+                    data-testid="agent-card"
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.4 + index * 0.1 }}
@@ -394,7 +414,10 @@ export default function TaskDetailPage() {
                     {/* Match Score */}
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center">
-                        <div className="text-2xl font-bold bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">
+                        <div 
+                          data-testid="match-score"
+                          className="text-2xl font-bold bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent"
+                        >
                           {agent.matchScore}%
                         </div>
                         <div className="text-sm text-gray-400 ml-2">匹配度</div>
@@ -415,7 +438,12 @@ export default function TaskDetailPage() {
                         className="w-10 h-10 rounded-full mr-3"
                       />
                       <div className="flex-1 min-w-0">
-                        <div className="font-semibold text-white truncate">{agent.name}</div>
+                        <div 
+                          data-testid="agent-name"
+                          className="font-semibold text-white truncate"
+                        >
+                          {agent.name}
+                        </div>
                         <div className="text-sm text-gray-400 truncate">{agent.title}</div>
                       </div>
                     </div>

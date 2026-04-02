@@ -198,8 +198,8 @@
       "id": "Sprint-05",
       "title": "API集成与订单管理",
       "features": ["F007"],
-      "status": "in-progress",
-      "progress": 0
+      "status": "completed",
+      "progress": 100
     }
   ]
 }

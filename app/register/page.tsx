@@ -96,7 +96,7 @@ export default function RegisterPage() {
 
             <div className="mt-6">
               <Link href="/register/demander">
-                <button className="w-full py-3 bg-neon-blue hover:bg-neon-blue/80 rounded-lg font-semibold transition-colors">
+                <button data-testid="demander-register-btn" className="w-full py-3 bg-neon-blue hover:bg-neon-blue/80 rounded-lg font-semibold transition-colors">
                   作为需求方注册 →
                 </button>
               </Link>
@@ -141,7 +141,7 @@ export default function RegisterPage() {
 
             <div className="mt-6">
               <Link href="/register/expert">
-                <button className="w-full py-3 bg-neon-violet hover:bg-neon-violet/80 rounded-lg font-semibold transition-colors">
+                <button data-testid="expert-register-btn" className="w-full py-3 bg-neon-violet hover:bg-neon-violet/80 rounded-lg font-semibold transition-colors">
                   作为专家注册 →
                 </button>
               </Link>

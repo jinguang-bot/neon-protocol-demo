@@ -767,6 +767,28 @@ _最后更新：2026-04-01 21:05_
 
 ---
 
+### 2026-04-03 08:54 - Sprint-02 P1 修复完成 ✅
+**工作内容**：
+- ✅ **添加 data-testid 属性**
+  - 添加 `data-testid="demander-register-button"` 到需求方注册按钮
+  - 添加 `data-testid="expert-register-button"` 到专家注册按钮
+  - 提升测试稳定性（不再依赖文字匹配）
+
+**Git 提交**：
+- Commit: `55e1ce5`
+- Message: "fix: add data-testid to registration buttons for stable E2E testing"
+- Files: 3 files changed
+
+**下一步**：
+- 修复 Sprint-04 任务详情页 P1 bug
+- 修复 Sprint-05 订单服务 P1 bug
+- 运行完整测试验证所有修复效果
+- 目标：通过率从 50.3% 提升到 90%+
+
+**版本**：Sprint-02 P1 修复完成 v1.0
+
+---
+
 ### 2026-04-02 23:01 - Sprint-07 完成 (100%) 🎉
 **完成内容**：
 - ✅ **资金结算服务** (`lib/settlement-service.ts` - 6.5KB)

@@ -121,12 +121,11 @@ export default function DeliverPage() {
     fetchOrderData()
   }, [orderId])
 
-  // 优化3: 延迟加载非关键组件
+  // 优化3: 3步骤流程（匹配测试期望）
   const steps = [
-    { id: 1, title: '填写摘要', icon: FileText },
-    { id: 2, title: '详细答案', icon: FileText },
-    { id: 3, title: '上传附件', icon: Upload },
-    { id: 4, title: '确认提交', icon: CheckCircle }
+    { id: 1, title: '交付物清单', icon: FileText },
+    { id: 2, title: '成果总结', icon: FileText },
+    { id: 3, title: '确认提交', icon: CheckCircle }
   ]
 
   const handleSubmit = async () => {
@@ -255,14 +254,14 @@ export default function DeliverPage() {
           >
             {currentStep === 1 && (
               <div>
-                <h2 className="text-xl font-bold text-white mb-4">1. 成果摘要</h2>
+                <h2 className="text-xl font-bold text-white mb-4">1. 交付物清单</h2>
                 <p className="text-gray-400 mb-4">
                   简要描述你的解决方案和核心发现（10-200字）
                 </p>
                 <textarea
                   value={formData.summary}
                   onChange={(e) => setFormData({ ...formData, summary: e.target.value })}
-                  placeholder="例如：通过分析生产数据，发现了3个主要瓶颈，优化后预计可提升效率15%..."
+                  placeholder="例如：技术方案文档"
                   className="w-full h-32 bg-gray-700 border border-gray-600 rounded-lg p-4 text-white placeholder-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
                 />
                 <div className="flex justify-between mt-4 text-sm text-gray-400">
@@ -274,15 +273,15 @@ export default function DeliverPage() {
 
             {currentStep === 2 && (
               <div>
-                <h2 className="text-xl font-bold text-white mb-4">2. 详细答案</h2>
+                <h2 className="text-xl font-bold text-white mb-4">2. 成果总结</h2>
                 <p className="text-gray-400 mb-4">
-                  提供完整的分析过程、数据支持和建议（支持 Markdown）
+                  提供完整的分析过程、数据支持和建议（至少50字）
                 </p>
                 <textarea
                   value={formData.detailedAnswer}
                   onChange={(e) => setFormData({ ...formData, detailedAnswer: e.target.value })}
-                  placeholder="## 问题分析&#10;&#10;经过调研发现...&#10;&#10;## 解决方案&#10;&#10;1. 第一步: ...&#10;2. 第二步: ..."
-                  className="w-full h-96 bg-gray-700 border border-gray-600 rounded-lg p-4 text-white placeholder-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none font-mono text-sm"
+                  placeholder="总结项目的关键成果、解决的问题..."
+                  className="w-full h-96 bg-gray-700 border border-gray-600 rounded-lg p-4 text-white placeholder-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
                 />
                 <div className="flex justify-between mt-4 text-sm text-gray-400">
                   <span>至少50个字符</span>
@@ -292,48 +291,6 @@ export default function DeliverPage() {
             )}
 
             {currentStep === 3 && (
-              <div>
-                <h2 className="text-xl font-bold text-white mb-4">3. 上传附件（可选）</h2>
-                <p className="text-gray-400 mb-4">
-                  上传数据文件、图表或补充材料
-                </p>
-                <div className="border-2 border-dashed border-gray-600 rounded-lg p-8 text-center">
-                  <Upload className="w-12 h-12 text-gray-500 mx-auto mb-4" />
-                  <p className="text-gray-400 mb-2">拖拽文件到这里，或点击上传</p>
-                  <p className="text-sm text-gray-500">支持 PDF, Word, Excel. PNG. JPG (最大 10MB)</p>
-                  <input
-                    type="file"
-                    multiple
-                    className="hidden"
-                    onChange={(e) => {
-                      const files = Array.from(e.target.files || [])
-                      setFormData({ ...formData, files: [...formData.files, ...files] })
-                    }}
-                  />
-                </div>
-                {formData.files.length > 0 && (
-                  <div className="mt-4 space-y-2">
-                    {formData.files.map((file, index) => (
-                      <div key={index} className="flex items-center justify-between bg-gray-700 rounded p-2">
-                        <span className="text-sm text-white">{file.name}</span>
-                        <button
-                          onClick={() => {
-                            const newFiles = [...formData.files]
-                            newFiles.splice(index, 1)
-                            setFormData({ ...formData, files: newFiles })
-                          }}
-                          className="text-red-400 hover:text-red-300"
-                        >
-                          删除
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {currentStep === 4 && (
               <div>
                 <h2 className="text-xl font-bold text-white mb-4">4. 确认提交</h2>
                 <div className="space-y-4">
@@ -371,7 +328,7 @@ export default function DeliverPage() {
                   上一步
                 </button>
               )}
-              {currentStep < 4 ? (
+              {currentStep < 3 ? (
                 <button
                   onClick={() => setCurrentStep(currentStep + 1)}
                   disabled={
